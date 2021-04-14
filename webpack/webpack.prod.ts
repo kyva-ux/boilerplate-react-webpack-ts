@@ -11,6 +11,5 @@ module.exports = merge(common, {
 		path: paths.build,
 		publicPath: '/'
 	},
-	devtool: 'source-map',
-	plugins: []
+	devtool: 'source-map'
 })

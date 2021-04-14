@@ -2,6 +2,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const copyWebpackPlugin = require('copy-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const paths = require('./paths')
 
 module.exports = {
@@ -26,7 +27,21 @@ module.exports = {
 				options: {
 					transpileOnly: true
 				}
-			}
+			},
+			{
+				test: /\.css$/i,
+				use: [MiniCssExtractPlugin.loader, 'css-loader']
+			},
+			{
+				test: /\.svg$/,
+				use: ['@svgr/webpack']
+			},
+
+			// Images: Copy image files to build folder
+			{ test: /\.(?:ico|gif|png|jpg|jpeg)$/i, type: 'asset/resource' },
+
+			// Fonts and SVGs: Inline files
+			{ test: /\.(woff(2)?|eot|ttf|otf|)$/, type: 'asset/inline' }
 		]
 	},
 	resolve: {
@@ -52,6 +67,10 @@ module.exports = {
 			template: paths.public + '/index.html', // template file
 			filename: 'index.html' // output file
 		}),
-		new ForkTsCheckerWebpackPlugin()
+		new ForkTsCheckerWebpackPlugin(),
+		new MiniCssExtractPlugin({
+			filename: '[name].[contenthash].css',
+			chunkFilename: '[id].[contenthash].css'
+		})
 	]
 }
