@@ -7,11 +7,13 @@ module.exports = merge(common, {
 	mode: 'development',
 	devtool: 'cheap-module-source-map',
 	devServer: {
+		static: {
+			directory: paths.build,
+		},
 		historyApiFallback: true,
-		contentBase: paths.build,
 		open: false,
 		compress: true,
 		hot: true,
-		port: 8080
-	}
+		port: 8080,
+	},
 })
